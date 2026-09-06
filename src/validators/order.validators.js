@@ -13,14 +13,12 @@ export const createOrderSchema = z.object({
   items: z.array(orderItemSchema).min(1),
   subtotal: z.coerce.number().positive(),
   currency: z.string().default('INR'),
-  customer: z
-    .object({
-      name: z.string().trim().min(2).max(80).optional().or(z.literal('')),
-      email: z.string().trim().email(),
-      phone: z.string().trim().min(7).max(20),
-      address: z.string().trim().min(5).max(300).optional().or(z.literal('')),
-      location: z.string().trim().min(5).max(300),
-    })
-    .required(),
+  customer: z.object({
+    name: z.string().trim().min(2).max(80).optional().or(z.literal('')),
+    email: z.string().trim().email(),
+    phone: z.string().trim().min(7).max(20),
+    address: z.string().trim().min(5).max(300).optional().or(z.literal('')),
+    location: z.string().trim().min(5).max(300),
+  }),
   source: z.string().default('web'),
 })
