@@ -15,6 +15,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(5000),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   CLIENT_URL: z.string().url().default('http://localhost:5173'),
+  CLIENT_URLS: z.string().trim().optional(),
   SUPABASE_URL: requiredSecret('SUPABASE_URL').url('SUPABASE_URL must be a valid Supabase project URL'),
   SUPABASE_ANON_KEY: z.string().trim().optional(),
   SUPABASE_PUBLISHABLE_KEY: z.string().trim().optional(),

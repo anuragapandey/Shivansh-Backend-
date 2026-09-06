@@ -11,14 +11,32 @@ import orderRoutes from './routes/order.routes.js'
 import productRoutes from './routes/product.routes.js'
 
 const app = express()
+const allowedOrigins = new Set([
+  env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  ...(env.CLIENT_URLS ? env.CLIENT_URLS.split(',').map((origin) => origin.trim()).filter(Boolean) : []),
+])
 
 app.use(helmet())
-app.use(cors({ origin: env.CLIENT_URL, credentials: true }))
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true)
+        return
+      }
+
+      callback(new Error(`CORS blocked for origin: ${origin}`))
+    },
+    credentials: true,
+  }),
+)
 app.use(express.json({ limit: '1mb' }))
 app.use(morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, service: 'a1-chips-api' })
+  res.json({ ok: true, service: 'shivansh-snacks-api' })
 })
 
 app.use('/api/auth', authRoutes)
