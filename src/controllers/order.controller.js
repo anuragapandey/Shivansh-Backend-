@@ -47,7 +47,9 @@ export const createOrder = asyncHandler(async (req, res) => {
     throw itemsError
   }
 
-  await sendOrderEmails(order, orderItems)
+  sendOrderEmails(order, orderItems).catch((error) => {
+    console.error('Order email failed:', error)
+  })
 
   res.status(201).json({
     order: {
